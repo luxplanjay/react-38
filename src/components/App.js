@@ -1,63 +1,57 @@
 import { Component } from 'react';
-import ReactPlayer from 'react-player/vimeo';
 import toast, { Toaster } from 'react-hot-toast';
 import { VideoList } from 'components/VideoList/VideoList';
-// import { Collapsible } from 'components/Collapsible/Collapsible';
+import { VideoPlayer } from 'components/VideoPlayer/VideoPlayer';
 import videos from '../videos.json';
-
-// const user = {
-//   meta: {
-//     hasFullAccess: false,
-//   },
-// };
+import axios from 'axios';
+import { SearchForm } from './SearchForm/SearchForm';
 
 export class App extends Component {
   state = {
     selectedVideo: null,
+    images: [],
+    searchTerm: null,
   };
 
-  selectVideo = link => {
-    toast.success('Видео выбрано!!!');
-    this.setState({ selectedVideo: link });
+  setSearchTerm = searchTerm => {
+    this.setState({ searchTerm });
   };
+
+  fetchImages = async () => {
+    const query = this.state.searchTerm ?? 'flowers';
+    const url = `https://pixabay.com/api/?key=4823621-792051e21e56534e6ae2e472f&q=${query}&image_type=photo`;
+    const { data } = await axios.get(url);
+    this.setState({ images: data.hits });
+  };
+
+  async componentDidMount() {
+    this.fetchImages();
+  }
+
+  async componentDidUpdate(_, prevState) {
+    if (prevState.searchTerm !== this.state.searchTerm) {
+      this.fetchImages();
+    }
+  }
+
+  // selectVideo = link => {
+  //   toast.success('Видео выбрано!!!');
+  //   this.setState({ selectedVideo: link });
+  // };
 
   render() {
-    const { selectedVideo } = this.state;
+    // const { selectedVideo } = this.state;
+
     return (
       <>
         <Toaster position="bottom-right" />
-        <VideoList
+        <SearchForm onSubmit={this.setSearchTerm} />
+        {/* <VideoList
           videos={videos}
           onSelect={this.selectVideo}
           selectedVideo={selectedVideo}
         />
-        {selectedVideo && <ReactPlayer url={selectedVideo} controls />}
-
-        {/* <Collapsible triggerText="Добавить заметку" mb={5}>
-          Some collapsible content 1
-        </Collapsible>
-        <hr />
-        <Collapsible isOpen triggerText="Показать" mt={20}>
-          Some collapsible content 2
-        </Collapsible>
-        <hr />
-        <Collapsible
-          isOpen
-          isDisabled={!user.meta.hasFullAccess}
-          triggerText="Сделать что-то"
-          mb={3}
-          mt={16}
-        >
-          Some collapsible content 3
-        </Collapsible>
-        <hr />
-        <Collapsible
-          isOpen
-          triggerText="Сделать что-то 4"
-          triggerPosition="bottom"
-        >
-          Some collapsible content 4
-        </Collapsible> */}
+        <VideoPlayer url={selectedVideo} /> */}
       </>
     );
   }

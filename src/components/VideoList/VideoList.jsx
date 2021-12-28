@@ -13,7 +13,6 @@ const ListItem = styled.li`
 `;
 
 export const VideoList = ({ videos, selectedVideo, onSelect }) => {
-  console.log(selectedVideo);
   return (
     <ul>
       {videos.map(video => (
