@@ -1,37 +1,29 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { PlayerWrapper, ReactPlayer, Loader } from './VideoPlayer.styled';
 
-export class VideoPlayer extends Component {
-  state = {
-    isVideoLoaded: false,
-  };
+export const VideoPlayer = ({ url }) => {
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.url !== this.props.url) {
-      this.setState({ isVideoLoaded: false });
-    }
-  }
+  useEffect(() => {
+    setIsVideoLoaded(false);
+  }, [url]);
 
-  render() {
-    const { isVideoLoaded } = this.state;
-    const { url } = this.props;
-    const showLoader = url && !isVideoLoaded;
-    const playerSize = showLoader ? 0 : '100%';
+  const showLoader = url && !isVideoLoaded;
+  const playerSize = showLoader ? 0 : '100%';
 
-    return (
-      <PlayerWrapper>
-        {showLoader && <Loader>Загружаем видео...</Loader>}
+  return (
+    <PlayerWrapper>
+      {showLoader && <Loader>Загружаем видео...</Loader>}
 
-        {url && (
-          <ReactPlayer
-            url={url}
-            width={playerSize}
-            height={playerSize}
-            controls
-            onReady={() => this.setState({ isVideoLoaded: true })}
-          />
-        )}
-      </PlayerWrapper>
-    );
-  }
-}
+      {url && (
+        <ReactPlayer
+          url={url}
+          width={playerSize}
+          height={playerSize}
+          controls
+          onReady={() => setIsVideoLoaded(true)}
+        />
+      )}
+    </PlayerWrapper>
+  );
+};

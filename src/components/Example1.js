@@ -1,32 +1,26 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { VideoList } from 'components/VideoList/VideoList';
 import { VideoPlayer } from 'components/VideoPlayer/VideoPlayer';
 import videos from '../videos.json';
 
-export class Example1 extends Component {
-  state = {
-    selectedVideo: null,
-  };
+export const Example1 = () => {
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
-  selectVideo = link => {
+  const selectVideo = link => {
     toast.success('Видео выбрано!!!');
-    this.setState({ selectedVideo: link });
+    setSelectedVideo(link);
   };
 
-  render() {
-    const { selectedVideo } = this.state;
-
-    return (
-      <>
-        <Toaster position="bottom-right" />
-        <VideoList
-          videos={videos}
-          onSelect={this.selectVideo}
-          selectedVideo={selectedVideo}
-        />
-        <VideoPlayer url={selectedVideo} />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Toaster position="bottom-right" />
+      <VideoList
+        videos={videos}
+        onSelect={selectVideo}
+        selectedVideo={selectedVideo}
+      />
+      <VideoPlayer url={selectedVideo} />
+    </>
+  );
+};

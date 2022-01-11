@@ -1,42 +1,31 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { SearchForm } from './SearchForm/SearchForm';
 
-export class Example2 extends Component {
-  state = {
-    selectedVideo: null,
-    images: [],
-    searchTerm: null,
-  };
+const getImages = async searchTerm => {
+  const query = searchTerm ?? 'flowers';
+  const url = `https://pixabay.com/api/?key=4823621-792051e21e56534e6ae2e472f&q=${query}&image_type=photo`;
+  const { data } = await axios.get(url);
+  return data.hits;
+};
 
-  setSearchTerm = searchTerm => {
-    this.setState({ searchTerm });
-  };
+export const Example2 = () => {
+  const [images, setImages] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(null);
 
-  fetchImages = async () => {
-    const query = this.state.searchTerm ?? 'flowers';
-    const url = `https://pixabay.com/api/?key=4823621-792051e21e56534e6ae2e472f&q=${query}&image_type=photo`;
-    const { data } = await axios.get(url);
-    this.setState({ images: data.hits });
-  };
+  useEffect(() => {
+    const fetchImages = async () => {
+      const images = await getImages(searchTerm);
+      setImages(images);
+    };
+    fetchImages();
+  }, [searchTerm]);
 
-  async componentDidMount() {
-    this.fetchImages();
-  }
-
-  async componentDidUpdate(_, prevState) {
-    if (prevState.searchTerm !== this.state.searchTerm) {
-      this.fetchImages();
-    }
-  }
-
-  render() {
-    return (
-      <>
-        <Toaster position="bottom-right" />
-        <SearchForm onSubmit={this.setSearchTerm} />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Toaster position="bottom-right" />
+      <SearchForm onSubmit={setSearchTerm} />
+    </>
+  );
+};
