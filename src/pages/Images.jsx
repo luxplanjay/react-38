@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import axios from 'axios';
-import { SearchForm } from './SearchForm/SearchForm';
+import { SearchForm } from 'components/SearchForm/SearchForm';
 
 const getImages = async searchTerm => {
   const query = searchTerm ?? 'flowers';
@@ -10,7 +10,7 @@ const getImages = async searchTerm => {
   return data.hits;
 };
 
-export const Example2 = () => {
+export const Images = () => {
   const [images, setImages] = useState([]);
   const [searchTerm, setSearchTerm] = useState(null);
 

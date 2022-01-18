@@ -1,18 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from 'styled-components';
-// import { Example1 } from './components/Example1';
-// import { Example2 } from './components/Example2';
-import { Reader } from './components/Reader/Reader';
+import { BrowserRouter } from 'react-router-dom';
+import { App } from 'components/App';
 import { theme } from 'constants/theme';
 import './index.css';
-import publications from './publications.json';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <Reader items={publications} />
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

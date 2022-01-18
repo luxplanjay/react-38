@@ -4,7 +4,7 @@ import { VideoList } from 'components/VideoList/VideoList';
 import { VideoPlayer } from 'components/VideoPlayer/VideoPlayer';
 import videos from '../videos.json';
 
-export const Example1 = () => {
+export const Player = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
 
   const selectVideo = link => {
