@@ -10,7 +10,7 @@ export const Layout = () => {
         <br />
         <Link to="/images">Images</Link>
       </nav>
-      <Outlet />
+      {/* <Outlet /> */}
     </div>
   );
 };
